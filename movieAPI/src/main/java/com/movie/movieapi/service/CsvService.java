@@ -6,13 +6,14 @@ import org.springframework.stereotype.Component;
 import java.io.IOException;
 import java.net.URISyntaxException;
 import java.util.List;
+import java.util.Optional;
 
 @Component
 public interface CsvService {
 
     public List<CsvDto> getListedCsv() throws URISyntaxException, IOException;
     public String initializeCSV() throws URISyntaxException;
-    public String checkBestPictureByName(String movieName) throws URISyntaxException, IOException;
+    public CsvDto checkBestPictureByName(String movieName);
 
     public String getBestPictureNominees() throws URISyntaxException, IOException;
 

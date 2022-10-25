@@ -1,11 +1,13 @@
 package com.movie.movieapi.controller;
 
+import com.movie.movieapi.dto.CsvDto;
 import com.movie.movieapi.service.CsvService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
 import java.net.URISyntaxException;
+import java.util.Optional;
 import java.util.UUID;
 
 
@@ -28,7 +30,7 @@ public class CsvController {
 
 
     @GetMapping("BestPicWon/{movieName}")
-    public String checkBestPicWin(@PathVariable("movieName") String movieName) throws URISyntaxException, IOException {
+    public CsvDto checkBestPicWin(@PathVariable("movieName") String movieName) throws URISyntaxException, IOException {
         return csvService.checkBestPictureByName(movieName);
     }
 }

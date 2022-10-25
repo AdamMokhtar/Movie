@@ -6,9 +6,9 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 public class CsvDto {
-    String year;
-    String category;
-    String Nominee;
-    String additionalInfo;
-    boolean won;
+    private String year;
+    private String category;
+    private String Nominee;
+    private String additionalInfo;
+    private String won;
 }
