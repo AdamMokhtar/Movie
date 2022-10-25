@@ -32,7 +32,17 @@ public class MovieServiceImpl implements MovieService {
     public List<MovieDto> getAllMovies() {
         log.info("Entering the getAllMovies of MovieServiceImpl class!!");
         List<Movie> movieList = movieRepository.findAll();
-        log.info("snehaaaaaaa");
         return movieMapper.toDto(movieList);
     }
+
+    /**
+     * @param name
+     * @return
+     */
+    @Override
+    public List<MovieDto> getMoviesByName(String name) {
+        List<Movie> movieList = movieRepository.findByMovieName(name);
+        return movieMapper.toDto(movieList);
+    }
+
 }

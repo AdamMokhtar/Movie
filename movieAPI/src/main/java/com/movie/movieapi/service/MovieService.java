@@ -7,4 +7,6 @@ import java.util.List;
 public interface MovieService {
 
     public List<MovieDto> getAllMovies();
+
+    public List<MovieDto> getMoviesByName(String name);
 }
