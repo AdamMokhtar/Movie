@@ -14,7 +14,7 @@ import java.util.UUID;
 
 @RestController
 @RequestMapping("/csv")
-public class CsvController {
+public class CsvController implements CsvControllerInterface {
 
     @Autowired
     private CsvService csvService;

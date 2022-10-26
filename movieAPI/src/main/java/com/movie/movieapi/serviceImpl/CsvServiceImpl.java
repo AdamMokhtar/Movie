@@ -81,7 +81,6 @@ public class CsvServiceImpl implements CsvService {
                         && mo.getCategory().equalsIgnoreCase("Best Picture")
                         && mo.getWon().equalsIgnoreCase("YES"))).findFirst();
             return csv.orElseThrow(() -> new MovieNotFound("Movie was not found"));
-
     }
 
     @Override
@@ -94,19 +93,20 @@ public class CsvServiceImpl implements CsvService {
                     return result;
                 }));
     }
-
     @Override
     public List<CsvDto> getBestPictureWinners() {
         List<CsvDto> csvList = getListedCsv();
         return  csvList.stream()
                 .filter(mo->(mo.getCategory().equalsIgnoreCase("Best Picture")
                 && mo.getWon().equalsIgnoreCase("YES")))
-                .collect(Collectors.collectingAndThen(Collectors.toList(), result -> {
+                .collect(Collectors.toList());
+
+ /*                       Collectors.collectingAndThen(Collectors.toList(), result -> {
                     if(result.isEmpty())
                         throw new MovieNotFound("Movie name entered was not a winner");
                                 log.debug("print anything");
                     return result;
-                }));
+                }));*/
     }
 
 }
