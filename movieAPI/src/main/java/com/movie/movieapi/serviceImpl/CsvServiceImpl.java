@@ -3,6 +3,8 @@ package com.movie.movieapi.serviceImpl;
 import com.movie.movieapi.dto.CsvDto;
 import com.movie.movieapi.exception.MovieNotFound;
 import com.movie.movieapi.service.CsvService;
+import lombok.extern.slf4j.Slf4j;
+import lombok.extern.slf4j.XSlf4j;
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVRecord;
 import org.springframework.stereotype.Service;
@@ -14,10 +16,12 @@ import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import static com.movie.movieapi.utils.Navigation.CSVFILE;
 
 @Service
+@Slf4j
 public class CsvServiceImpl implements CsvService {
 
 
@@ -68,46 +72,11 @@ public class CsvServiceImpl implements CsvService {
         return ListedCsv;
     }
 
-//    @Override
-//    public String checkBestPictureByName(String movieName) throws URISyntaxException, IOException {
-//        String absolutePath = initializeCSV();
-//        String won = "FALSE";
-//        BufferedReader reader = null;
-//        String line = "";
-//
-//        try {
-//            reader = new BufferedReader(new FileReader(absolutePath));
-//            while ((line = reader.readLine()) != null){
-//
-//                String[] values = line.split(",");
-//                if(values[2].equalsIgnoreCase(movieName)) {
-//                    if (values[1].equalsIgnoreCase("Best Picture")) {
-//                        if (values[4].equalsIgnoreCase("Yes")) {
-//                            won = "TRUE";
-//                        }
-//                    }
-//                }
-//            }
-//        }
-//        catch (Exception e){
-//            e.printStackTrace();
-//        }
-//        finally {
-//            reader.close();
-//            return won.toString();
-//        }
-//    }
-
     //TODO:: check space for the category name
     @Override
     public CsvDto checkBestPictureByName(String movieName) {
-        List<CsvDto> CscList = getListedCsv();
-//        return Optional.ofNullable(CscList.stream()
-//                .filter(mo -> mo.getNominee().equalsIgnoreCase(movieName))
-//                .filter(mo -> mo.getCategory().equalsIgnoreCase("Best Picture"))
-//                .filter(mo_ -> mo_.getWon().equalsIgnoreCase("YES"))
-//                .findFirst().orElseThrow(() -> new MovieNotFound("Movie was not found")));
-        Optional<CsvDto> csv = CscList.stream().
+        List<CsvDto> csvList = getListedCsv();
+        Optional<CsvDto> csv = csvList.stream().
                 filter(mo->(mo.getNominee().equalsIgnoreCase(movieName)
                         && mo.getCategory().equalsIgnoreCase("Best Picture")
                         && mo.getWon().equalsIgnoreCase("YES"))).findFirst();
@@ -116,61 +85,28 @@ public class CsvServiceImpl implements CsvService {
     }
 
     @Override
-    public String getBestPictureNominees() throws URISyntaxException, IOException {
-        String absolutePath = initializeCSV();
-        List<String> bestPictureNominees = new ArrayList<>();
-        BufferedReader reader = null;
-        String line = "";
-
-        try {
-            reader = new BufferedReader(new FileReader(absolutePath));
-            while ((line = reader.readLine()) != null){
-
-                String[] values = line.split(",");
-                if(values[1].equalsIgnoreCase("Best Picture"))
-                {
-                    bestPictureNominees.add(values[2]);
-                }
-            }
-        }
-        catch (Exception e){
-            e.printStackTrace();
-        }
-        finally {
-            reader.close();
-            return bestPictureNominees.toString();
-        }
+    public List<CsvDto> getBestPictureNominees(){
+        List<CsvDto> csvList = getListedCsv();
+        return  csvList.stream()
+                .filter(mo->mo.getCategory().equalsIgnoreCase("Best Picture"))
+                .collect(Collectors.collectingAndThen(Collectors.toList(), result -> {
+                    if(result.isEmpty()) throw new MovieNotFound("Movie name entered was not nominated");
+                    return result;
+                }));
     }
 
     @Override
-    public String getBestPictureWinners() throws URISyntaxException, IOException {
-
-        String absolutePath = initializeCSV();
-        List<String> bestPictureWinners = new ArrayList<>();
-        BufferedReader reader = null;
-        String line = "";
-
-        try {
-            reader = new BufferedReader(new FileReader(absolutePath));
-            while ((line = reader.readLine()) != null){
-
-                String[] values = line.split(",");
-                if(values[1].equalsIgnoreCase("Best Picture"))
-                {
-                    if(values[4].equalsIgnoreCase("Yes")){
-                        bestPictureWinners.add(values[2]);
-                    }
-                }
-            }
-        }
-        catch (Exception e){
-            e.printStackTrace();
-        }
-        finally {
-            reader.close();
-            return bestPictureWinners.toString();
-        }
+    public List<CsvDto> getBestPictureWinners() {
+        List<CsvDto> csvList = getListedCsv();
+        return  csvList.stream()
+                .filter(mo->(mo.getCategory().equalsIgnoreCase("Best Picture")
+                && mo.getWon().equalsIgnoreCase("YES")))
+                .collect(Collectors.collectingAndThen(Collectors.toList(), result -> {
+                    if(result.isEmpty())
+                        throw new MovieNotFound("Movie name entered was not a winner");
+                                log.debug("print anything");
+                    return result;
+                }));
     }
-
 
 }

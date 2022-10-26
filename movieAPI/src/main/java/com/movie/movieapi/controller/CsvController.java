@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
 import java.net.URISyntaxException;
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -19,18 +20,18 @@ public class CsvController {
     private CsvService csvService;
 
     @GetMapping("BestPicNom")
-    public String getBestPicNom() throws URISyntaxException, IOException {
+    public List<CsvDto> getBestPicNom(){
         return csvService.getBestPictureNominees();
     }
 
     @GetMapping("BestPicWinners")
-    public String getBestPicWin() throws URISyntaxException, IOException {
+    public List<CsvDto> getBestPicWin(){
         return csvService.getBestPictureWinners();
     }
 
 
     @GetMapping("BestPicWon/{movieName}")
-    public CsvDto checkBestPicWin(@PathVariable("movieName") String movieName) throws URISyntaxException, IOException {
+    public CsvDto checkBestPicWin(@PathVariable("movieName") String movieName) {
         return csvService.checkBestPictureByName(movieName);
     }
 }

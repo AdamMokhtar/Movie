@@ -15,8 +15,8 @@ public interface CsvService {
     public String initializeCSV() throws URISyntaxException;
     public CsvDto checkBestPictureByName(String movieName);
 
-    public String getBestPictureNominees() throws URISyntaxException, IOException;
+    public List<CsvDto> getBestPictureNominees();
 
-    public String getBestPictureWinners() throws URISyntaxException, IOException;
+    public List<CsvDto> getBestPictureWinners();
 
 }
