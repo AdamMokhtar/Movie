@@ -11,4 +11,6 @@ public interface MovieService {
     public List<MovieDto> getMoviesByName(String name);
 
     public MovieDto postMovie(MovieDto movieDto);
+
+    public boolean checkSimilarMovieExist(MovieDto movieDto);
 }
