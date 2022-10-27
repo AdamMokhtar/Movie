@@ -3,10 +3,7 @@ package com.movie.movieapi.entity;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import lombok.Data;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 import java.io.Serializable;
 
 @Entity
@@ -15,7 +12,8 @@ import java.io.Serializable;
 public class Movie implements Serializable {
 
     @Id
-    @Column(name = "movie_id")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "movie_id", unique=true)
     private Long movieid;
 
     @Column(name = "movie_name")

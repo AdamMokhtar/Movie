@@ -45,4 +45,16 @@ public class MovieServiceImpl implements MovieService {
         return movieMapper.toDto(movieList);
     }
 
+    /**
+     *
+     * @param movieDto
+     * @return
+     */
+    @Override
+    public MovieDto postMovie(MovieDto movieDto) {
+        Movie movie = movieMapper.toEntity(movieDto);
+        movie = movieRepository.saveAndFlush(movie);
+        return movieMapper.toDto(movie);
+    }
+
 }

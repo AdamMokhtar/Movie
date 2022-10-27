@@ -9,4 +9,6 @@ public interface MovieService {
     public List<MovieDto> getAllMovies();
 
     public List<MovieDto> getMoviesByName(String name);
+
+    public MovieDto postMovie(MovieDto movieDto);
 }
