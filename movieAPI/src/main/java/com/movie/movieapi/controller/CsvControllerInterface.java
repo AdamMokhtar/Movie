@@ -1,8 +1,6 @@
 package com.movie.movieapi.controller;
 
 import com.movie.movieapi.dto.CsvDto;
-import com.movie.movieapi.dto.MovieDto;
-import com.movie.movieapi.dto.ResponseDto;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
