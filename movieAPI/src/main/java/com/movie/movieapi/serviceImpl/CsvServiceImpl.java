@@ -4,7 +4,6 @@ import com.movie.movieapi.dto.CsvDto;
 import com.movie.movieapi.exception.MovieNotFound;
 import com.movie.movieapi.service.CsvService;
 import lombok.extern.slf4j.Slf4j;
-import lombok.extern.slf4j.XSlf4j;
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVRecord;
 import org.springframework.stereotype.Service;
@@ -74,14 +73,15 @@ public class CsvServiceImpl implements CsvService {
 
     //TODO:: check space for the category name
     @Override
-    public CsvDto checkBestPictureByName(String movieName) {
-        List<CsvDto> csvList = getListedCsv();
-        Optional<CsvDto> csv = csvList.stream().
-                filter(mo->(mo.getNominee().equalsIgnoreCase(movieName)
-                        && mo.getCategory().equalsIgnoreCase("Best Picture")
-                        && mo.getWon().equalsIgnoreCase("YES"))).findFirst();
-            return csv.orElseThrow(() -> new MovieNotFound("Movie was not found"));
-    }
+    public CsvDto checkBestPictureByName(String movieName)throws MovieNotFound {
+            List<CsvDto> csvList = getListedCsv();
+            CsvDto csvDto = new CsvDto();
+            Optional<CsvDto> csv = csvList.stream().
+                    filter(mo -> (mo.getNominee().equalsIgnoreCase(movieName)
+                            && mo.getCategory().equalsIgnoreCase("Best Picture")
+                            && mo.getWon().equalsIgnoreCase("YES"))).findFirst();
+        return csv.orElseThrow(() -> new MovieNotFound("Movie was not found under Best Picture "));
+ }
 
     @Override
     public List<CsvDto> getBestPictureNominees(){
@@ -101,12 +101,6 @@ public class CsvServiceImpl implements CsvService {
                 && mo.getWon().equalsIgnoreCase("YES")))
                 .collect(Collectors.toList());
 
- /*                       Collectors.collectingAndThen(Collectors.toList(), result -> {
-                    if(result.isEmpty())
-                        throw new MovieNotFound("Movie name entered was not a winner");
-                                log.debug("print anything");
-                    return result;
-                }));*/
     }
 
 }
