@@ -13,4 +13,5 @@ public interface MovieService {
     public MovieDto postMovie(MovieDto movieDto);
 
     public boolean checkSimilarMovieExist(MovieDto movieDto);
+    public void deleteMovie(Long id);
 }

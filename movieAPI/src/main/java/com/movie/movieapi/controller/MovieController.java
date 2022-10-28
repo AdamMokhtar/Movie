@@ -9,6 +9,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.persistence.EntityNotFoundException;
 import javax.validation.ConstraintViolationException;
 import java.util.List;
 
@@ -54,6 +55,7 @@ public class MovieController implements MovieControllerInterface{
      * @param movieDto
      * @return MovieDto
      * @exception MovieNotFound will be thrown if a movie with the same name, release year and language exist
+     * @exception ConstraintViolationException will be thrown if a movies without the name or release year or language is submitted
      */
     @PostMapping(value="/movie")
     public ResponseEntity<MovieDto> createMovie(@RequestBody MovieDto movieDto) {
@@ -70,9 +72,21 @@ public class MovieController implements MovieControllerInterface{
         }
     }
 
-    @Override
-    public ResponseEntity<MovieDto> deleteMovie(MovieDto movieDto) {
-        return null;
+    /**
+     *This method is used to delete a movie
+     *
+     * @param id
+     * @return void
+     * @exception EntityNotFoundException will be thrown if a movie id was null or not found in the database
+     */
+    @DeleteMapping(value="/movie/{id}")
+    public ResponseEntity<Void> deleteMovie(@RequestParam Long id) {
+        try {
+            movieService.deleteMovie(id);
+            return ResponseEntity.noContent().build();
+        } catch (EntityNotFoundException e) {
+            return new ResponseEntity("The movie id was not found",HttpStatus.NOT_FOUND);
+        }
     }
 
 

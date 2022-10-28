@@ -26,16 +26,17 @@ public interface MovieControllerInterface {
             @ApiResponse(description = "Internal error", responseCode = "500", content = @Content) })
     ResponseEntity<List<MovieDto>> getMoviesByName(@RequestParam String name);
 
-    @Operation(summary = "Create Movie", description = "Create a new Movie", tags = { "Movie" }, responses = {
+    @Operation(summary = "Create movie", description = "Create a new Movie", tags = { "Movie" }, responses = {
             @ApiResponse(description = "Success", responseCode = "200", content = @Content(mediaType = "application/json", schema = @Schema(implementation = MovieDto.class))),
             @ApiResponse(description = "Bad Request", responseCode = "400"),
             @ApiResponse(description = "Internal error", responseCode = "500", content = @Content) })
     ResponseEntity<MovieDto> createMovie(@RequestBody MovieDto movieDto);
 
-    @Operation(summary = "Create Movie", description = "Create a new Movie", tags = { "Movie" }, responses = {
-            @ApiResponse(description = "Success", responseCode = "200", content = @Content(mediaType = "application/json", schema = @Schema(implementation = MovieDto.class))),
+    @Operation(summary = "Delete movie", description = "Delete a movie by Id", tags = { "Movie" }, responses = {
+            @ApiResponse(description = "No content", responseCode = "204"),
+            @ApiResponse(description = "Not found", responseCode = "404"),
             @ApiResponse(description = "Bad Request", responseCode = "400"),
             @ApiResponse(description = "Internal error", responseCode = "500", content = @Content) })
-    ResponseEntity<MovieDto> deleteMovie(@RequestBody MovieDto movieDto);
+    ResponseEntity<Void> deleteMovie(@RequestParam Long id);
 
 }

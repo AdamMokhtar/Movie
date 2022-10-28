@@ -12,6 +12,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.persistence.EntityNotFoundException;
 import javax.validation.*;
 import java.util.List;
 import java.util.Set;
@@ -88,6 +89,25 @@ public class MovieServiceImpl implements MovieService {
         if(count > 0)
             return true;
         return false;
+    }
+
+    /**
+     *
+     * @param id
+     */
+    @Override
+    public void deleteMovie(Long id) {
+        log.info("Entering the delete movie method");
+        if(id != null && movieRepository.existsById(id))
+        {
+            movieRepository.deleteById(id);
+        }
+        else {
+            throw new EntityNotFoundException("Movie id was not found");
+        }
+
+
+
     }
 
 }
