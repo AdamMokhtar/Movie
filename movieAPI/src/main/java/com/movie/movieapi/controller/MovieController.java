@@ -7,6 +7,7 @@ import com.movie.movieapi.utils.Navigation;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import javax.persistence.EntityNotFoundException;
@@ -30,6 +31,7 @@ public class MovieController implements MovieControllerInterface{
      *
      * @return List<MovieDto>
      */
+    @PreAuthorize("hasAuthority('Admin')")
     @GetMapping(value="/allmovies")
     public ResponseEntity<List<MovieDto>> getAllMovies(){
         log.info("Starting getAllMovies method {}");
@@ -79,6 +81,7 @@ public class MovieController implements MovieControllerInterface{
      * @return void
      * @exception EntityNotFoundException will be thrown if a movie id was null or not found in the database
      */
+    @PreAuthorize("hasAuthority('Admin')")
     @DeleteMapping(value="/movie/{id}")
     public ResponseEntity<Void> deleteMovie(@RequestParam Long id) {
         try {

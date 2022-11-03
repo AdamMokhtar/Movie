@@ -27,7 +27,7 @@ public interface MovieControllerInterface {
     ResponseEntity<List<MovieDto>> getMoviesByName(@RequestParam String name);
 
     @Operation(summary = "Create movie", description = "Create a new Movie", tags = { "Movie" }, responses = {
-            @ApiResponse(description = "Success", responseCode = "200", content = @Content(mediaType = "application/json", schema = @Schema(implementation = MovieDto.class))),
+            @ApiResponse(description = "Created", responseCode = "201", content = @Content(mediaType = "application/json", schema = @Schema(implementation = MovieDto.class))),
             @ApiResponse(description = "Bad Request", responseCode = "400"),
             @ApiResponse(description = "Internal error", responseCode = "500", content = @Content) })
     ResponseEntity<MovieDto> createMovie(@RequestBody MovieDto movieDto);

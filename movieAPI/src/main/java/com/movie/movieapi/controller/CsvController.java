@@ -3,6 +3,7 @@ package com.movie.movieapi.controller;
 import com.movie.movieapi.dto.CsvDto;
 import com.movie.movieapi.exception.MovieNotFound;
 import com.movie.movieapi.service.CsvService;
+import com.movie.movieapi.utils.Navigation;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -16,7 +17,7 @@ import java.util.List;
 
 
 @RestController
-@RequestMapping("/csv")
+@RequestMapping(Navigation.CSV)
 @Slf4j
 public class CsvController implements CsvControllerInterface {
 
