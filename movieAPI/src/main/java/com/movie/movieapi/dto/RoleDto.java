@@ -1,12 +1,14 @@
 package com.movie.movieapi.dto;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.movie.movieapi.entity.User;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
-import java.util.Collection;
+import java.util.HashSet;
+import java.util.Set;
 
 @Data
 @NoArgsConstructor
@@ -15,5 +17,6 @@ public class RoleDto {
     @NotBlank(message = "User Name cannot be blank")
     private Integer roleId;
     private String roleName;
-    private Collection<User> users;
+    @JsonIgnore
+    private Set<User> users = new HashSet<>();
 }

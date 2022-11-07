@@ -1,16 +1,21 @@
 package com.movie.movieapi.dto;
 
-import com.movie.movieapi.entity.Role;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
+import net.minidev.json.annotate.JsonIgnore;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
-import java.util.Collection;
+import java.util.HashSet;
+import java.util.Set;
 
-@Data
+
 @NoArgsConstructor
+@Data
 public class UserDto {
+
+    @ToString.Exclude
     private Integer id;
     private String name;
     @NotNull(message = "User Name cannot be null")
@@ -20,5 +25,6 @@ public class UserDto {
     @NotNull(message = "Password cannot be null")
     @NotBlank(message = "Password cannot be blank")
     private String password;
-    private Collection<Role> roles;
+    @JsonIgnore
+    private Set<RoleDto> roles = new HashSet<>();
 }

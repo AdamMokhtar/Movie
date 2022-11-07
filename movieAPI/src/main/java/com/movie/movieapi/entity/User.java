@@ -1,7 +1,7 @@
 package com.movie.movieapi.entity;
 
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
+import net.minidev.json.annotate.JsonIgnore;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -11,10 +11,12 @@ import java.util.Set;
 
 @Entity
 @Table(name="user")
-@Data
+@Getter
+@Setter
 @NoArgsConstructor
 public class User  implements Serializable {
 
+    @ToString.Exclude
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", unique=true)
@@ -26,7 +28,7 @@ public class User  implements Serializable {
     @Column(name = "password")
     private String password;
 //    , referencedColumnName = "role_id"
-    @Column(name = "role_fk")
+    @JsonIgnore
     @ManyToMany(fetch=FetchType.EAGER)
     @JoinTable(
             name = "users_roles",
@@ -34,9 +36,9 @@ public class User  implements Serializable {
                     name = "user_id"),
             inverseJoinColumns = @JoinColumn(
                     name = "role_id"))
-    private Collection<Role> roles;
+    private Set<Role> roles = new HashSet<>();
 
-    public User(String name,String username,String password, Collection<Role> roles)
+    public User(String name,String username,String password, Set<Role> roles)
     {
         this.name = name;
         this.username = username;

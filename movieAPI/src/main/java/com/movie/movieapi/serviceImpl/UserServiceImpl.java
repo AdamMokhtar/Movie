@@ -1,27 +1,34 @@
 package com.movie.movieapi.serviceImpl;
 
 import com.movie.movieapi.dto.MovieDto;
+import com.movie.movieapi.dto.RoleDto;
 import com.movie.movieapi.dto.UserDto;
 import com.movie.movieapi.entity.Movie;
+import com.movie.movieapi.entity.Role;
 import com.movie.movieapi.entity.SecurityUser;
 import com.movie.movieapi.entity.User;
 import com.movie.movieapi.exception.MovieNotFound;
 import com.movie.movieapi.mapper.UserMapper;
+import com.movie.movieapi.repository.RoleRepository;
 import com.movie.movieapi.repository.UserRepository;
 import com.movie.movieapi.service.UserService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.diagnostics.FailureAnalysis;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.webjars.NotFoundException;
 
 import javax.naming.NameAlreadyBoundException;
 import javax.validation.ConstraintViolation;
 import javax.validation.ConstraintViolationException;
 import javax.validation.Validator;
+import java.util.Collection;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -70,17 +77,23 @@ public class UserServiceImpl implements UserService,UserDetailsService {
      * @return
      */
     @Override
-    public UserDto postUser(UserDto userDto) throws NameAlreadyBoundException { //need to check this!!
+    public UserDto postUser(UserDto userDto, RoleDto roleDto) throws NameAlreadyBoundException {
         log.info("Entering the post user method");
         Set<ConstraintViolation<UserDto>> violations = validator.validate(userDto);
         if(violations.isEmpty()){
             if (!checkUserNameInDB(userDto)) {
                 log.info("There is no similar username in the database");
+                log.info("Adding role to the user");
+                Set<RoleDto> roles = new HashSet<>();
+                roles.add(roleDto);
+                userDto.setRoles(roles);
+
                 User user = userMapper.toEntity(userDto);
                 //set password using encoder
                 String pass = user.getPassword();
                 user.setPassword(encoder.encode(pass));
-                user = userRepository.saveAndFlush(user);
+
+                user = userRepository.save(user);
                 return userMapper.toDto(user);
             } else {
                 throw new NameAlreadyBoundException("There is a similar user name to "+userDto.getUsername());
@@ -103,5 +116,7 @@ public class UserServiceImpl implements UserService,UserDetailsService {
             return true;
         return false;
     }
+
+
 
 }

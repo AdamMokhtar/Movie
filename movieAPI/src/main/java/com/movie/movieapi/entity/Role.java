@@ -1,6 +1,9 @@
 package com.movie.movieapi.entity;
 
 import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
+import net.minidev.json.annotate.JsonIgnore;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -10,7 +13,8 @@ import java.util.Set;
 
 @Entity
 @Table(name="role")
-@Data
+@Getter
+@Setter
 public class Role implements Serializable {
 
     @Id
@@ -19,7 +23,8 @@ public class Role implements Serializable {
     private Integer roleId;
     @Column(name = "role_name")
     private String roleName;
+    @JsonIgnore
     @Column(name = "user_id")
     @ManyToMany(mappedBy = "roles")
-    private Collection<User> users;
+    private Set<User> users = new HashSet<>();
 }
