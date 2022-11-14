@@ -10,6 +10,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
+import javax.management.InstanceAlreadyExistsException;
+import javax.naming.NameAlreadyBoundException;
 import javax.persistence.EntityNotFoundException;
 import javax.validation.ConstraintViolationException;
 import java.util.List;
@@ -71,6 +73,10 @@ public class MovieController implements MovieControllerInterface{
 
         }catch (ConstraintViolationException c){
             return new ResponseEntity("there was a ConstraintViolationException regarding the object of the movie",HttpStatus.BAD_REQUEST);
+        } catch (NameAlreadyBoundException e) {
+            throw new RuntimeException(e);
+        } catch (InstanceAlreadyExistsException e) {
+            throw new RuntimeException(e);
         }
     }
 

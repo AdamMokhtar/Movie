@@ -15,7 +15,6 @@ import java.util.Set;
 @Data
 public class UserDto {
 
-    @ToString.Exclude
     private Integer id;
     private String name;
     @NotNull(message = "User Name cannot be null")

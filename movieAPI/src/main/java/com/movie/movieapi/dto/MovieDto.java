@@ -23,4 +23,6 @@ public class MovieDto {
     @NotBlank(message = "language Name cannot be blank")
     private String language;
     private String rated;
+
+
 }
